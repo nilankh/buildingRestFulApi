@@ -1,3 +1,4 @@
+const Joi = require('joi')
 //  this return a function we called as express
 const express = require('express')
 // now we need to call express function and store in app by convention
@@ -36,6 +37,22 @@ app.get('/api/courses/:id', (req, res) => {
 })
 
 app.post('/api/courses', (req, res) => {
+  const schema = {
+    name: Joi.string().min(3).required(),
+  }
+  const result = Joi.validate(req.body, schema)
+  // console.log(result)
+
+  if (result.error) {
+    // res.status(400).send(result.error)
+    res.status(400).send(result.error.details[0].message)
+    return
+  }
+  // if (!req.body.name || req.body.name.length < 3) {
+  //   // 404 Bad request
+  //   res.status(400).send('Name is required and should be minimum 3 characters.')
+  //   return
+  // }
   const course = {
     id: courses.length + 1,
     name: req.body.name,
