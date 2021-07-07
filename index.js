@@ -1,3 +1,4 @@
+const config = require('config');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const Joi = require('joi')
@@ -21,6 +22,12 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 // it is use to serve static files, passed a folder called public.We will put all our static assets like css, images and so on inside this folder.
 app.use(helmet());
+
+// Configuration
+console.log('Application Name: ' + config.get('name'))
+console.log('Mail Server: ' + config.get('mail.host'))
+console.log('Mail Password: ' + config.get('mail.password'))
+
 
 // app.use(morgan('tiny'))
 // enable loggng http request only on development macchine
