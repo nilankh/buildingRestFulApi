@@ -5,6 +5,7 @@ const express = require('express')
 const app = express()
 
 app.use(express.json())
+// when we call express.json() method, this method returns a function, a middleware function, the job of this middleware function is to read the request, and if there is json object in the body of the request, it will parse the body of the request, into json object and then it will set to the req.body property.
 
 const courses = [
   { id: 1, name: 'course1' },
@@ -32,22 +33,34 @@ app.get('/api/courses/:id', (req, res) => {
   const course = courses.find((c) => c.id === parseInt(req.params.id))
   //   This req.params.id return string so comparison krne ke lia parse krna hoga
 
-  if (!course) res.status(404).send('The course with given ID was not found')
+  if (!course)
+    return res.status(404).send('The course with given ID was not found')
   res.send(course)
 })
 
 app.post('/api/courses', (req, res) => {
-  const schema = {
-    name: Joi.string().min(3).required(),
-  }
-  const result = Joi.validate(req.body, schema)
-  // console.log(result)
+  const { error } = validateCourse(req.body) //result.error
 
-  if (result.error) {
+  if (error) {
     // res.status(400).send(result.error)
-    res.status(400).send(result.error.details[0].message)
+    res.status(400).send(error.details[0].message)
     return
   }
+
+  // Joi validation
+  // const schema = {
+  //   name: Joi.string().min(3).required(),
+  // }
+  // const result = Joi.validate(req.body, schema)
+  // // console.log(result)
+
+  // if (result.error) {
+  //   // res.status(400).send(result.error)
+  //   res.status(400).send(result.error.details[0].message)
+  //   return
+  // }
+
+  // without package
   // if (!req.body.name || req.body.name.length < 3) {
   //   // 404 Bad request
   //   res.status(400).send('Name is required and should be minimum 3 characters.')
@@ -63,6 +76,61 @@ app.post('/api/courses', (req, res) => {
   res.send(course)
 })
 
+// update
+app.put('/api/courses/:id', (req, res) => {
+  // Look up the course
+  // If not exisiting, return 404
+  const course = courses.find((c) => c.id === parseInt(req.params.id))
+  //   This req.params.id return string so comparison krne ke lia parse krna hoga
+
+  if (!course) {
+    return res.status(404).send('The course with given ID was not found')
+  }
+
+  // Validate
+  // if validate, return 400 - Bad request
+  // const result = validateCourse(req.body);
+
+  // object destructuring
+  // const result = validateCourse(req.body);
+  // in curly braces we add property of target object,in this target object has returned from validate course method has two property error and value.  we need only error
+  const { error } = validateCourse(req.body) //result.error
+
+  if (error) {
+    // res.status(400).send(result.error)
+    // res.status(400).send(result.error.details[0].message)
+    res.status(400).send(error.details[0].message)
+    return
+  }
+  // Update course
+  course.name = req.body.name
+  res.send(course)
+  // Return the updated course
+})
+
+app.delete('/api/courses/:id', (req, res) => {
+  // look up the course
+  // Not exisitng 404
+  const course = courses.find((c) => c.id === parseInt(req.params.id))
+  //   This req.params.id return string so comparison krne ke lia parse krna hoga
+
+  if (!course)
+    return res.status(404).send('The course with given ID was not found')
+
+  // Delete
+  const index = courses.indexOf(course)
+  courses.splice(index, 1)
+  // Return the same course]
+  res.send(course)
+})
+
+function validateCourse(course) {
+  const schema = {
+    name: Joi.string().min(3).required(),
+  }
+  return Joi.validate(course, schema)
+}
+
 /*
 // multiple parameter in routes
 app.get('/api/posts/:year/:month', (req, res) => {
@@ -77,7 +145,7 @@ app.get('/api/post/:year/:month', (req, res) => {
 })*/
 
 // PORT
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8000
 app.listen(port, () => {
   console.log(`App listening on port ${port}!`)
 })
