@@ -1,26 +1,11 @@
 const Joi = require('joi')
 //  this return a function we called as express
-const logger = require('./logger');
-
 const express = require('express')
 // now we need to call express function and store in app by convention
 const app = express()
 
 app.use(express.json())
 // when we call express.json() method, this method returns a function, a middleware function, the job of this middleware function is to read the request, and if there is json object in the body of the request, it will parse the body of the request, into json object and then it will set to the req.body property.
-
-// Custom middleware function
-// app.use(function(req, res, next) {
-//   console.log("Logging...");
-//   next();
-//   // next() to pass control to the next middleware function in the pipeline.If you don't do this, you are not termination req, res cycle, our req will end up hanging.
-// });
-app.use(logger);
-app.use(function (req, res, next) {
-  console.log('Authenticating...')
-  next()
-  // next() to pass control to the next middleware function in the pipeline.If you don't do this, you are not termination req, res cycle, our req will end up hanging.
-})
 
 const courses = [
   { id: 1, name: 'course1' },
