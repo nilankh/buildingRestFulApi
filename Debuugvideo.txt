@@ -1,0 +1,53 @@
+F:\NodejsProject\NEW PROJECT\BasicRestApi>set DEBUG=app:startup
+
+F:\NodejsProject\NEW PROJECT\BasicRestApi>nodemon index.js
+[nodemon] 2.0.9
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node index.js`
+Application Name: My Express App - Development
+Mail Server: dev-mail-server
+Mail Password: 1234
+  app:startup Morgan enabled +0ms
+App listening on port 8000!
+^C
+F:\NodejsProject\NEW PROJECT\BasicRestApi>set DEBUG=
+
+F:\NodejsProject\NEW PROJECT\BasicRestApi>nodemon index.js
+[nodemon] 2.0.9
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node index.js`
+Application Name: My Express App - Development
+Mail Server: dev-mail-server
+Mail Password: 1234
+App listening on port 8000!
+^C
+F:\NodejsProject\NEW PROJECT\BasicRestApi>set DEBUG=app:*              
+
+F:\NodejsProject\NEW PROJECT\BasicRestApi>nodemon index.js
+[nodemon] 2.0.9
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node index.js`
+Application Name: My Express App - Development
+Mail Server: dev-mail-server
+Mail Password: 1234
+  app:startup Morgan enabled +0ms
+  app:db Connected to the database.. +1ms
+App listening on port 8000!
+^C
+F:\NodejsProject\NEW PROJECT\BasicRestApi>DEBUG=app:db nodemon index.js
+[nodemon] 2.0.9
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node index.js`
+Application Name: My Express App - Development
+Mail Server: dev-mail-server
+Mail Password: 1234
+  app:db Connected to the database.. +0ms
+App listening on port 8000!
