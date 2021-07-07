@@ -9,6 +9,12 @@ const app = express()
 app.use(express.json())
 // when we call express.json() method, this method returns a function, a middleware function, the job of this middleware function is to read the request, and if there is json object in the body of the request, it will parse the body of the request, into json object and then it will set to the req.body property.
 
+app.use(express.urlencoded({extended: true}))
+// when we call express.urlencoded() method,this method return  a function a middleware function, this middleware function parses incoming request with urlencoded payloads, that is req with body like this key=value&key=value
+
+app.use(express.static('public'))
+// it is use to serve static files, passed a folder called public.We will put all our static assets like css, images and so on inside this folder.
+
 // Custom middleware function
 // app.use(function(req, res, next) {
 //   console.log("Logging...");
