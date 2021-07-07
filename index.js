@@ -1,3 +1,5 @@
+const morgan = require('morgan');
+const helmet = require('helmet');
 const Joi = require('joi')
 //  this return a function we called as express
 const logger = require('./logger');
@@ -14,6 +16,8 @@ app.use(express.urlencoded({extended: true}))
 
 app.use(express.static('public'))
 // it is use to serve static files, passed a folder called public.We will put all our static assets like css, images and so on inside this folder.
+app.use(helmet());
+app.use(morgan('tiny'));
 
 // Custom middleware function
 // app.use(function(req, res, next) {
