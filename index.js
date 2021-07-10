@@ -6,10 +6,11 @@ const helmet = require('helmet')
 const Joi = require('joi')
 //  this return a function we called as express
 const logger = require('./middleware/logger')
-const courses = require('./routes/courses');
+const courses = require('./routes/courses')
+// loading the express module. this returns a function so we store in variable callled express
 const express = require('express')
-// now we need to call express function and store in app by convention
-const app = express()
+// now we need to call express function and its return object of type express and by covention we call the object app by convention, this represntr our application
+const app = express()// this app object has bunch of useful method
 
 // Environment
 // console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
@@ -24,8 +25,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 // it is use to serve static files, passed a folder called public.We will put all our static assets like css, images and so on inside this folder.
 app.use(helmet())
-app.use('/api/courses', courses);
-
+app.use('/api/courses', courses)
 
 // Configuration
 console.log('Application Name: ' + config.get('name'))
@@ -56,9 +56,6 @@ app.use(function (req, res, next) {
   next()
   // next() to pass control to the next middleware function in the pipeline.If you don't do this, you are not termination req, res cycle, our req will end up hanging.
 })
-
-
-
 
 // PORT
 const port = process.env.PORT || 8000
