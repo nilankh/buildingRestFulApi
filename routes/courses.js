@@ -1,71 +1,17 @@
-const startupDebugger = require('debug')('app:startup')
-const dbDebugger = require('debug')('app:db')
-const config = require('config')
-const morgan = require('morgan')
-const helmet = require('helmet')
+const express = require('express');
+const router = express.Router();
 const Joi = require('joi')
-//  this return a function we called as express
-const logger = require('./logger')
-
-const express = require('express')
-// now we need to call express function and store in app by convention
-const app = express()
-
-// Environment
-// console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
-// console.log(`app: ${app.get('env')}`);
-
-app.use(express.json())
-// when we call express.json() method, this method returns a function, a middleware function, the job of this middleware function is to read the request, and if there is json object in the body of the request, it will parse the body of the request, into json object and then it will set to the req.body property.
-
-app.use(express.urlencoded({ extended: true }))
-// when we call express.urlencoded() method,this method return  a function a middleware function, this middleware function parses incoming request with urlencoded payloads, that is req with body like this key=value&key=value
-
-app.use(express.static('public'))
-// it is use to serve static files, passed a folder called public.We will put all our static assets like css, images and so on inside this folder.
-app.use(helmet())
-
-// Configuration
-console.log('Application Name: ' + config.get('name'))
-console.log('Mail Server: ' + config.get('mail.host'))
-console.log('Mail Password: ' + config.get('mail.password'))
-
-// app.use(morgan('tiny'))
-// enable loggng http request only on development macchine
-if (app.get('env') === 'development') {
-  app.use(morgan('tiny'))
-  // console.log('Morgan enabled')
-  startupDebugger('Morgan enabled')
-}
-
-// Db work...
-dbDebugger('Connected to the database..')
-// to set on production set NODE_ENV = production write on terminal
-
-// Custom middleware function
-// app.use(function(req, res, next) {
-//   console.log("Logging...");
-//   next();
-//   // next() to pass control to the next middleware function in the pipeline.If you don't do this, you are not termination req, res cycle, our req will end up hanging.
-// });
-app.use(logger)
-app.use(function (req, res, next) {
-  console.log('Authenticating...')
-  next()
-  // next() to pass control to the next middleware function in the pipeline.If you don't do this, you are not termination req, res cycle, our req will end up hanging.
-})
-
 const courses = [
   { id: 1, name: 'course1' },
   { id: 2, name: 'course2' },
   { id: 3, name: 'course3' },
 ]
 
-app.get('/', (req, res) => {
-  res.send('Hello World!!!')
-})
+// router.get('/', (req, res) => {
+//   res.send('Hello World!!!')
+// })
 
-app.get('/api/courses', (req, res) => {
+router.get('/', (req, res) => {
   res.send(courses)
 })
 
@@ -77,7 +23,7 @@ app.get('/api/courses/:id', (req, res) => {
 */
 
 // get single courses
-app.get('/api/courses/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   const course = courses.find((c) => c.id === parseInt(req.params.id))
   //   This req.params.id return string so comparison krne ke lia parse krna hoga
 
@@ -86,7 +32,7 @@ app.get('/api/courses/:id', (req, res) => {
   res.send(course)
 })
 
-app.post('/api/courses', (req, res) => {
+router.post('/', (req, res) => {
   const { error } = validateCourse(req.body) //result.error
 
   if (error) {
@@ -125,7 +71,7 @@ app.post('/api/courses', (req, res) => {
 })
 
 // update
-app.put('/api/courses/:id', (req, res) => {
+router.put('/:id', (req, res) => {
   // Look up the course
   // If not exisiting, return 404
   const course = courses.find((c) => c.id === parseInt(req.params.id))
@@ -156,7 +102,7 @@ app.put('/api/courses/:id', (req, res) => {
   // Return the updated course
 })
 
-app.delete('/api/courses/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
   // look up the course
   // Not exisitng 404
   const course = courses.find((c) => c.id === parseInt(req.params.id))
@@ -192,8 +138,4 @@ app.get('/api/post/:year/:month', (req, res) => {
   //   http://localhost:3000/api/post/2019/1?sortBy=name
 })*/
 
-// PORT
-const port = process.env.PORT || 8000
-app.listen(port, () => {
-  console.log(`App listening on port ${port}!`)
-})
+module.exports = router;
