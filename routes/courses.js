@@ -104,7 +104,7 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // look up the course
-  // Not exisitng 404
+  // Not exisitng return 404
   const course = courses.find((c) => c.id === parseInt(req.params.id))
   //   This req.params.id return string so comparison krne ke lia parse krna hoga
 
