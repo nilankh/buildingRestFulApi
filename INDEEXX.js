@@ -50,7 +50,7 @@ dbDebugger('Connected to the database..')
 // });
 app.use(logger)
 app.use(function (req, res, next) {
-  console.log('Authenticating...')
+  console.log('Authenticating...') //req.body(that middle function parses the req body and if there is json object it will set req.body, then it will pass control to next middle wale function )
   next()
   // next() to pass control to the next middleware function in the pipeline.If you don't do this, you are not termination req, res cycle, our req will end up hanging.
 })
